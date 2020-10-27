@@ -1,0 +1,31 @@
+Description: >
+    Terry Jung / Udacity 2020
+    DevOps High-availability Web App Deployment Project
+
+    This template deploys S3 bucekt to store files.
+
+Parameters:
+
+    EnvironmentName:
+        Description: An environment name that will be prefixed to resource names
+        Type: String
+
+    S3BucketName:
+        Description: Name of the S3 bucekt to store files
+        Type: String
+
+Resources:
+
+    S3Bucket:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: !Ref S3BucketName
+        DeletionPolicy: Delete
+
+Outputs:
+
+    S3Bucket:
+        Description: S3 Bucket to store files
+        Value: !Ref S3Bucket
+        Export:
+            Name: !Sub ${EnvironmentName}-S3-BUCKET
