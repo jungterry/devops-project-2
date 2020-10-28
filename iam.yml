@@ -1,0 +1,62 @@
+Description: >
+    Terry Jung / Udacity 2020
+    DevOps High-availability Web App Deployment Project
+
+    This template deploys IAM role that allows the instances to use the S3 Service.
+
+Parameters:
+
+    EnvironmentName:
+        Description: An environment name that will be prefixed to resource names
+        Type: String
+
+Resources:
+
+    WebAppIAM:
+        Type: AWS::IAM::Role
+        Properties: 
+            AssumeRolePolicyDocument:
+                Statement:
+                    - Effect: Allow
+                      Principal:
+                        Service:
+                            - ec2.amazonaws.com
+                      Action:
+                        - sts:AssumeRole                 
+            Path: "/"
+            RoleName: !Sub ${EnvironmentName}-WebAppIAM
+
+    WebAppPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub ${EnvironmentName}-WebAppPolicy
+            PolicyDocument:
+                Statement:
+                    - Effect: Allow
+                      Action:
+                        - "s3:Get*"
+                        - "s3:List*"
+                      Resource: "*"
+            Roles:
+                - Ref: WebAppIAM
+
+    WebAppInstanceProfile:
+        Type: AWS::IAM::InstanceProfile
+        Properties:
+            Path: "/"
+            Roles: 
+                - Ref: WebAppIAM
+
+Outputs:
+
+    WebAppIAM:
+        Description: Web app IAM Role to S3 bucket read only access
+        Value: !Ref WebAppIAM
+        Export:
+            Name: !Sub ${EnvironmentName}-WEBAPP-IAM
+
+    WebAppInstanceProfile:
+        Description: Instance profile of Web app IAM
+        Value: !Ref WebAppInstanceProfile
+        Export:
+            Name: !Sub ${EnvironmentName}-WEBAPP-INST-PRF
