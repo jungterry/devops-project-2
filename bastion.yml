@@ -1,0 +1,122 @@
+Description: >
+    Terry Jung / Udacity 2020
+    DevOps High-availability Web App Deployment Project
+
+    This template deploys bastion servers.
+
+Parameters:
+
+    EnvironmentName:
+        Description: An environment name that will be prefixed to resource names
+        Type: String
+
+    InstanceAMI:
+        Description: Amazon Machine Image for an instance
+        Type: String
+        Default: ami-07a29e5e945228fa1
+
+    InstanceType:
+        Description: An instance type to use for the web app
+        Type: String
+        Default: t3.medium
+
+    KeyName:
+        Description: Keypair for bastion server
+        Type: AWS::EC2::KeyPair::KeyName
+        Default: WebAppBastionKey
+
+    SSHIP:
+        Description: Network allowed to connect using ssh to bastion server
+        Type: String
+        Default: 0.0.0.0/0
+
+Resources:
+
+    BastionSecGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: Allow ssh connection to bastion server
+            VpcId:
+                Fn::ImportValue:
+                    !Sub "${EnvironmentName}-VPCID"
+            SecurityGroupIngress:
+                - IpProtocol: tcp
+                  FromPort: 22
+                  ToPort: 22
+                  CidrIp: !Ref SSHIP
+            SecurityGroupEgress:
+                - IpProtocol: tcp
+                  FromPort: 0
+                  ToPort: 65535
+                  CidrIp: 0.0.0.0/0
+            Tags:
+                - Key: name
+                  Value: !Sub ${EnvironmentName} Bastion Server Security Group
+
+    Bastion1EIP:
+        Type: AWS::EC2::EIP
+        Properties:
+            Domain: vpc
+    
+    Bastion2EIP:
+        Type: AWS::EC2::EIP
+        Properties:
+            Domain: vpc
+
+    Bastion1:
+        Type: AWS::EC2::NatGateway
+        Properties:
+            AllocationId: !GetAtt Bastion1EIP.AllocationId
+            SubnetId:
+                Fn::ImportValue:
+                    !Sub ${EnvironmentName}-PUBLIC1-SN
+
+    Bastion2:
+        Type: AWS::EC2::NatGateway
+        Properties:
+            AllocationId: !GetAtt Bastion2EIP.AllocationId
+            SubnetId:
+                Fn::ImportValue:
+                    !Sub ${EnvironmentName}-PUBLIC2-SN
+
+    BastionLaunchConfig:
+        Type: AWS::AutoScaling::LaunchConfiguration
+        Properties:
+            ImageId: !Ref InstanceAMI
+            IamInstanceProfile:
+                Fn::ImportValue:
+                    !Sub ${EnvironmentName}-WEBAPP-INST-PRF
+            KeyName: !Ref KeyName
+            SecurityGroups:
+                - Ref: BastionSecGroup
+            InstanceType: !Ref InstanceType
+            BlockDeviceMappings:
+                - DeviceName: "/dev/sdk"
+                  Ebs:
+                    VolumeSize: '10'
+                    DeleteOnTermination: true
+                    VolumeType: "gp2"
+
+    WebAppGroup:
+        Type: AWS::AutoScaling::AutoScalingGroup
+        Properties:
+            VPCZoneIdentifier:
+                - Fn::ImportValue: !Sub "${EnvironmentName}-PUBLIC1-SN"
+                - Fn::ImportValue: !Sub "${EnvironmentName}-PUBLIC2-SN"
+            LaunchConfigurationName:
+                Ref: BastionLaunchConfig
+            MinSize: '1'
+            MaxSize: '2'
+            DesiredCapacity: '1'
+            Tags:
+                - Key: name
+                  Value: !Sub ${EnvironmentName} Bastion Auto Scaling Group
+                  PropagateAtLaunch: true
+
+Outputs:
+
+    BastionEIPS:
+        Description: Bastion Elastic IP
+        Value: !Join [", ", [ !Ref Bastion1EIP, !Ref Bastion2EIP ]]
+        Export:
+            Name: !Sub ${EnvironmentName}-BASTION-IPS

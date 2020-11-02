@@ -1,0 +1,22 @@
+[
+	{
+		"ParameterKey": "EnvironmentName",
+		"ParameterValue": "UdacityDevOpsProject2"
+	},
+	{
+		"ParameterKey": "InstanceAMI",
+		"ParameterValue": "ami-07a29e5e945228fa1"
+	},
+	{
+		"ParameterKey": "InstanceType",
+		"ParameterValue": "t3.medium"
+	},
+    {
+        "ParameterKey": "KeyName",
+        "ParameterValue": "WebAppBastionKey"
+    },
+    {
+        "ParameterKey": "SSHIP",
+        "ParameterValue": "0.0.0.0/0"
+    }
+]
