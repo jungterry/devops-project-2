@@ -55,4 +55,6 @@ Last thing: Remember to delete your CloudFormation stack when you're done to avo
 
 # My Solution
 
+## Architecture Diagram
+
 ![diagram](https://github.com/jungterry/devops-project-2/blob/main/diagram/Infrastructure%20Diagram.PNG?raw=true)
