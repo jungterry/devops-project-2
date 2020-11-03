@@ -52,3 +52,7 @@ See the provided supporting code for help and more clues.
 If you want to go the extra mile, set up a bastion host to allow you to SSH into your private subnet servers. This bastion host would be on a Public Subnet with port 22 open only to your home IP address, and it would need to have the private key that you use to access the other servers.
 
 Last thing: Remember to delete your CloudFormation stack when you're done to avoid recurring charges!
+
+# My Solution
+
+![diagram](https://github.com/[jungterry]/[devops-project-2]/diagram/Infrastructure Diagram.pdf?raw=true)
