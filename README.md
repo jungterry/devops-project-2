@@ -65,4 +65,6 @@ CloudFormation scripts are written to deploy network and servers required to mee
 
 ## Basic Usage
 
-Stacks can be created using the bash script create.ssh using the command: ./ create.sh [stack name] [yml script] [json parameters script].
+Stacks can be created using the bash script create.sh using the command: ./ create.sh [stack name] [yml script] [json parameters script].
+Stacks can also be updated using the bash script update.sh using the command: ./ update.sh [stack name] [yml script] [json parameters script].
+After everything is doen stacks can be deleted using the bash script delete.sh using the command: ./ delete.sh [stack name]
