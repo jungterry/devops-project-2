@@ -63,5 +63,6 @@ Last thing: Remember to delete your CloudFormation stack when you're done to avo
 
 CloudFormation scripts are written to deploy network and servers required to meet the project requirements. Each folder in this repository contains CloundFormation scripts to deploy necessary infrastructure in AWS services. Utils folder contains bash scripts to help create, update, and delete stacks to help manage the deployment.
 
+## Basic Usage
 
-
+Stacks can be created using the bash script create.ssh using the command: ./ create.sh [stack name] [yml script] [json parameters script].
