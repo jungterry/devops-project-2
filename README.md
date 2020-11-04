@@ -61,5 +61,7 @@ Last thing: Remember to delete your CloudFormation stack when you're done to avo
 
 ## Scripts
 
-CloudFormation scripts were written to deploy network and servers required to meet the project requirements. Each folders in this repository contains CloundFormation scripts for deploy necessary infrastructure in AWS services. Utils folder contain bash scripts to help create, update, and delete stacks to help manage the deployment.
+CloudFormation scripts are written to deploy network and servers required to meet the project requirements. Each folder in this repository contains CloundFormation scripts to deploy necessary infrastructure in AWS services. Utils folder contains bash scripts to help create, update, and delete stacks to help manage the deployment.
+
+
 
