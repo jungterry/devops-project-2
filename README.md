@@ -71,9 +71,10 @@ After everything is doen stacks can be deleted using the bash script delete.sh u
 
 ## Stack Deployment Sequence
 
-1. Deploy network stack  
-2. Deploy bucket stack  
-3. Copy udagram.zip in s3 bucket using command: aws s3 cp udagram.zip s3://udagramwebapp-s3  
+1. Deploy network stack
+2. Deploy bucket stack
+3. Copy udagram.zip in s3 bucket using command: aws s3 cp udagram.zip s3://udagramwebapp-s3
 4. Deploy iam stack
 5. Deploy server stack
 6. Create WebAppBastionKey key pair in AWS EC2 Console
+7. Deploy bastion stack
