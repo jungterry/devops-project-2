@@ -75,4 +75,4 @@ After everything is doen stacks can be deleted using the bash script delete.sh u
 2. Deploy bucket stack  
 3. Copy udagram.zip in s3 bucket using command: aws s3 cp udagram.zip s3://udagramwebapp-s3  
 4. Deploy iam stack
-
+5. Deploy server stack
